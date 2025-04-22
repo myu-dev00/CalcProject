@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Calculator {
-    Scanner sc = new Scanner(System.in);
-    Double result = null;
-    List<Double> results = new ArrayList();
-    //   private Scanner sc;
+    private Scanner sc = new Scanner(System.in);
+    private Double result = null;
+    private List<String> results = new ArrayList<>();
+    private char op = ' ';
 
     /* 연산 결과를 저장하는 컬렉션 타입 필드 선언 및 생성 */
 
@@ -16,9 +16,7 @@ public class Calculator {
 //        /* 위 요구사항에 맞게 구현 */
 //        /* return 연산 결과 */
 //    }
-//    public Calculator1(Scanner sc) {
-//        this.sc = sc;
-//    }
+
 
     void calc(int v1, int v2, char op) {
         switch (op) {
@@ -42,128 +40,124 @@ public class Calculator {
                 System.out.println("op = " + op);
                 System.out.println("switch-default error.");
         }
-        results.add(result);
-        beau_output(result);
+        save_output(result);
     }
 
-    void beau_output(Double result) {
+
+    void save_output(Double result) {
         String rtStr = Double.toString(result);
         int naturalNumIdx = rtStr.indexOf("."); //'.'이 찍힌 곳의 idx를 찾아서 반영 (idx는 0부터 시작하기 떄문에 유의)
         int decimalDigit = rtStr.length() - naturalNumIdx - 1; //전체 문자열 수 - 자연수 - '.'
-
+        String string_result;
         // 자릿수 갯수 및 정수에 따른 출력 변화
         if ((decimalDigit == 1) && (rtStr.charAt(naturalNumIdx + 1) == '0')) { //소수점이 '0'인 정수일때
-            int intResult = (int) (double) result; //Double -> double -> int int 형으로 바꾼다.
-            System.out.println("결과: " + intResult);
+            System.out.println("정수연산");
+            string_result = String.format("%d", (int) (double) result);
         } else if (decimalDigit < 3) {
-            System.out.println("결과: " + result);
+            System.out.println("소수점 3자리 연산");
+            string_result = String.format("%f", result);
         } else {
-            String rt1 = String.format("%.3f", result);
-            if (rt1.equals("0.000")) System.out.println("수가 너무 작아 계산이 명확하지 않을 수 있습니다, 결과: " + result);
-            else System.out.println("결과: " + rt1);
+            System.out.println("소수점 3자리 이상 연산");
+            string_result = String.format("%.3f", result);
+            if (string_result.equals("0.000")){
+                System.out.println("와중에 수가 너무 적어요");
+                string_result = String.format("%6f", result);
+            }
         }
+        results.add(string_result);
     }
 
 
-    int input_num() {
-        String string_value = sc.next();
-
-        int int_value = is_it_positive(string_value);
-
-        return int_value;
+    int inputNum() {
+        String string_value = sc.nextLine();
+        return isItPositive(string_value);
     }
 
-    int is_it_positive(String string_value) {
-        int int_value = 0;
+    int isItPositive(String string_value) {
         for (int i = 0; i < string_value.length(); i++) {
             char ch = string_value.charAt(i);
             if (ch < '0' || ch >= '9') {
                 System.out.println("0포함의 양의 정수를 입력하여 주세요.");
-                return input_num();
+                return inputNum();
             }
         }
-        int_value = Integer.valueOf(string_value);
-        return int_value;
+        return Integer.valueOf(string_value);
     }
 
-    char input_op() {
-        String operator = sc.next(); //char, 제일 처음만 받는 함수
-
-        char op = is_it_op(operator);
-
-        return op;
+    char inputOp() {
+        String operator = sc.nextLine(); //char, 제일 처음만 받는 함수
+        return isItOp(operator);
     }
 
-    char is_it_op(String operator) {
-        char op = ' ';
+    char isItOp(String operator) {
         if (operator.length() != 1) {
             System.out.println("잘못된 연산자 입니다. +, -, *, / 중 하나만 입력 부탁드립니다.");
-            input_op();
+            inputOp();
         } else {
             op = operator.charAt(0);
             if (op != '+' && op != '-' && op != '*' && op != '/') {
                 System.out.println("잘못된 연산자 입니다. +, -, *, / 중 하나만 입력 부탁드립니다.");
-                input_op();
+                inputOp();
             }
         }
         return op;
     }
 
     public void removeResult() {
-        results.remove(results.get(0));
+        if (!results.isEmpty()) {
+            results.remove(0);
+        } else System.out.println("저장 결과가 비어있습니다. 삭제 가능한 결과가 없습니다.");
     }
 
-    public void printResult() {
-        System.out.println("results = " + results);
-    }
 
     String menu() {
-        System.out.println("===========메뉴창===========");
-        System.out.println("메뉴를 선택해 주십시오. \n1. 더 계산하시겠습니까?\n2. 결과물들을 출력하시겠습니까? (2 입력)\n3. 제일 첫 결과물을 삭제하시겠습니까? (3 입력)\n4. 종료하시겠습니까? (exit 입력)\n");
 
-        String read_menu = sc.nextLine();
-        String menu = null; //리턴때도 null이 되니 오류가 뜸.
+        System.out.println("===========메뉴창===========");
+        System.out.println("메뉴를 선택해 주십시오.\n" +
+                "1. 더 계산하시겠습니까?(1 입력)\n" +
+                "2. 결과물들을 출력하시겠습니까? (2 입력)\n" +
+                "3. 제일 첫 결과물을 삭제하시겠습니까? (3 입력)\n" +
+                "4. 종료하시겠습니까? (exit 입력)\n");
+
+        String read_menu = sc.nextLine().trim();
+        //리턴때도 null이 되니 오류가 뜸.
+        System.out.println("read_menu = " + read_menu);
         switch (read_menu) {
             case "1":
-                return menu = read_menu;
+                return "1";
             case "2":
-                menu = read_menu;
-                printResult();
+                System.out.println(getResults());
                 return menu();
             case "3":
-                menu = read_menu;
                 System.out.print("삭제 전 결과 저장 내역: ");
-                printResult();
+                System.out.println(getResults());
                 removeResult();
                 System.out.print("삭제 후 결과 저장 내역: ");
-                printResult();
+                System.out.println(getResults());
                 return menu();
             case "exit":
-                return menu = read_menu;
+                return read_menu;
             default:
                 System.out.println("다시 입력하여 주세요.");
-                menu = read_menu;
                 return menu();
         }
-//        switch (read_menu) {   - null값을 없애기 위해 함.
-//            case "1":
-//                menu = read_menu;
-//                break;
-//            case "2":
-//                menu = read_menu;
-//                printResult();
-//                break;
-//            case "3":
-//                menu = read_menu;
-//                char op = input_op();
-//                break;
-//            case "exit":
-//                menu = read_menu;
-//                break;
-//            default:
-//                System.out.println("다시 입력하여 주세요.");
-//                menu = read_menu;
-//                menu();
-//        }
+    }
+
+    public List<String> getResults() {
+        if (results.isEmpty()) {
+            return null;
+        }
+        return new ArrayList<>(results);
+    }
+
+    public String getResult() {
+        if (results.isEmpty()) {
+            return null;
+        }
+        return results.get(results.size() - 1);
+    }
+
+    public void setResults(List<String> newResults) {
+        this.results = newResults;
     }
 }
