@@ -1,4 +1,4 @@
-package Level2;
+package Level2_2;
 
 //계산된 결과 값들을 기록하는 컬렉션을 만든다.
 //컬렉션의 가장 먼저 저장된 데이터를 삭제하는 기능을 만든다.
@@ -16,20 +16,27 @@ public class App {
 
 
         do {
-            int flag =1;
-            System.out.println("첫번째 정수를 입력하여주십시오: ");
-            int v1 = calc.inputNum();
-            System.out.println("두번째 정수를 입력하여주십시오: ");
-            int v2 = calc.inputNum();
-            System.out.println("수식을 입력하여주십시오: ");
-            char op = calc.inputOp();
+            boolean flag = true; //메뉴 나가기 위한 변수
 
-            calc.calc(v1, v2, op);
-            System.out.println("결과: "+calc.getResult());
+            System.out.print("첫번째 정수를 입력하여주십시오: ");
+            calc.setNum();
+            System.out.print("두번째 정수를 입력하여주십시오: ");
+            calc.setNum();
+            System.out.print("수식을 입력하여주십시오: ");
+            calc.setOp();
+
+            calc.calc();
+
+            int v1 = calc.getValue(0);
+            int v2 = calc.getValue(1);
+            char op = calc.getOp();
+
+            System.out.println();
+            System.out.println(v1 + " " + op + " " + v2 + " = " + calc.getResult());
 
             System.out.println();
 
-            while (flag == 1) {
+            while (flag) {
                 System.out.println("===========메뉴창===========");
                 System.out.println("메뉴를 선택해 주십시오.\n" +
                         "1. 더 계산하시겠습니까?(1 입력)\n" +
@@ -37,11 +44,11 @@ public class App {
                         "3. 제일 첫 결과물을 삭제하시겠습니까? (3 입력)\n" +
                         "4. 종료하시겠습니까? (exit 입력)\n");
 
-                menu = sc.nextLine().trim();
-                //리턴때도 null이 되니 오류가 뜸.
+                menu = sc.nextLine();
+                //trim()을 통하여 불필요한 공백문자들을 비움.
                 switch (menu) {
                     case "1":
-                        flag = 0;
+                        flag = false;
                         break;
                     case "2":
                         System.out.println(calc.getResults());
@@ -54,13 +61,15 @@ public class App {
                         System.out.println(calc.getResults());
                         break;
                     case "exit":
-                        flag = 0;
+                        flag = false;
                         break;
                     default:
                         System.out.println("다시 입력하여 주세요.");
                 }
             }
 
+            calc.removeValues();
+            calc.removeValues();
 
         } while (!menu.equals("exit"));
     }
