@@ -2,7 +2,7 @@ package v3;
 
 public class Vaild {
 
-    public char isItOp(String operator) {
+    public char isItOperator(String operator) {
         char op = ' ';
         if (operator.length() != 1) {
             System.out.println("잘못된 연산자 입니다. +, -, *, / 중 하나만 입력 부탁드립니다.");
@@ -17,10 +17,10 @@ public class Vaild {
         return op;
     }
 
-    public int isItPositive(String string_value) {
+    public int isItPositive(String operand) {
         int intValue = 0;
-        for (int i = 0; i < string_value.length(); i++) {
-            char ch = string_value.charAt(i);
+        for (int i = 0; i < operand.length(); i++) {
+            char ch = operand.charAt(i);
             if (ch < '0' || ch > '9') {
                 System.out.println("0포함의 양의 정수를 입력하여 주세요.");
                 return -1;
@@ -30,7 +30,6 @@ public class Vaild {
                 return -1;
             }
         }
-        intValue = Integer.parseInt(string_value);
-        return intValue;
+        return Integer.parseInt(operand);
     }
 }

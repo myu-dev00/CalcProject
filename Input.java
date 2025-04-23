@@ -27,7 +27,7 @@ public class Input {
                 continue;  // 비어있는 경우 다시 입력을 받도록 반복
             }
 
-            op = vaild.isItOp(operator);
+            op = vaild.isItOperator(operator);
             if (op != ' ') {
                 break;  // 올바른 연산자가 입력되면 반복 종료
             }
