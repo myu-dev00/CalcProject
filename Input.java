@@ -1,4 +1,4 @@
-package v3;
+package v2;
 
 import java.util.Scanner;
 
@@ -6,12 +6,7 @@ public class Input {
     //속성
     private Scanner sc = new Scanner(System.in);
     private Vaild vaild  = new Vaild();
-    private Calculator calc;
 
-    //생성자 Calculator 객체를 받아옴
-    public Input(Calculator calc) {
-        this.calc = calc;
-    }
 
     //기능
 

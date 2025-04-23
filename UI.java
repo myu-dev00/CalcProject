@@ -1,4 +1,4 @@
-package v3;
+package v2;
 
 public class UI {
     //속성 Calculator 객체를 받아옴
@@ -23,7 +23,6 @@ public class UI {
             menu = input.inputMenu();
             if (menu.isEmpty()) {
                 System.out.println("다시 입력하여주세요");
-                menuUI();
                 break;
             }
             switch (menu) {

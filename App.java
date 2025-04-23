@@ -1,11 +1,9 @@
-package v3;
-
-import java.util.Scanner;
+package v2;
 
 public class App {
     public static void main(String[] args) {
         Calculator calc = new Calculator();
-        Input input = new Input(calc);
+        Input input = new Input();
         UI ui = new UI(calc,input);
         String menu = " ";
 
